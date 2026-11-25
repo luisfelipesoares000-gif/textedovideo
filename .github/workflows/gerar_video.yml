@@ -1,0 +1,39 @@
+name: Gerar Video Tempo Diario
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-video:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar arquivos do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar FFmpeg e Fontes
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+
+      - name: Instalar bibliotecas Python
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Gerar vídeo com voz e animação
+        run: |
+          python gerar_video.py
+
+      - name: Disponibilizar vídeo para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-tempo-diario
+          path: tempo_diario_final.mp4
