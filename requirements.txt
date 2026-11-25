@@ -1,0 +1,4 @@
+edge-tts
+pillow
+numpy
+opencv-python-headless
